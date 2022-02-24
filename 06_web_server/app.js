@@ -2,12 +2,28 @@ const http = require('http')
 
 const PORT = 3000
 
+const db = [
+	{
+		id: 1,
+		name: 'Mg Mg'
+	},
+	{
+		id: 2,
+		name: 'Aung Aung'
+	},
+	{
+		id: 3,
+		name: 'Hla Hla'
+	},
+]
 const server = http.createServer((req, res) => {
 	const path = req.url;
+	const method = req.method;
 
 	res.writeHead(200, {
 		'Content-Type': 'application/json'
 	})
+
 	if (path === '/messages') {
 		res.statusCode = 200;
 		res.write(JSON.stringify([
@@ -15,6 +31,10 @@ const server = http.createServer((req, res) => {
 			{message: 'Hi World'},
 		]))
 		res.end()
+	} else if (method === 'POST' && path === '/messages') {
+		req.on('data', data => {
+			console.log(data)
+		})
 	} else if (path === '/') {
 		res.end(JSON.stringify({
 			message: 'Welcome'
