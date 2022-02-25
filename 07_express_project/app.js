@@ -1,8 +1,14 @@
 const express = require('express')
+const bodyParser = require('body-parser')
 
 const PORT = 3000
 const app = express()
 
+app.use(
+    bodyParser.urlencoded({
+        extended: true,
+    })
+)
 app.use((req, res, next) => {
     const prev = Date.now()
     next()
@@ -27,6 +33,22 @@ app.get('/', (req, res) => {
 
 app.get('/friends', (req, res) => {
     res.json(friends)
+})
+
+app.post('/friends', (req, res) => {
+    if (!req.body.name) {
+        return res.status(400).json({
+            error: 'Faid to create a new friend',
+        })
+    }
+
+    const newFriend = {
+        id: friends.length + 1,
+        name: req.body.name,
+    }
+
+    friends.push(newFriend)
+    res.json(newFriend)
 })
 
 app.get('/friends/:id', (req, res) => {
