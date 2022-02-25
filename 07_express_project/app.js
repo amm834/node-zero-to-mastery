@@ -1,8 +1,14 @@
 const express = require('express')
 
+const PORT = 3000
 const app = express()
 
-const PORT = 3000
+app.use((req, res, next) => {
+    const prev = Date.now()
+    next()
+    const delta = Date.now() - prev
+    console.log(`${req.method} ${req.url} ${delta}ms`)
+})
 
 const friends = [
     {
