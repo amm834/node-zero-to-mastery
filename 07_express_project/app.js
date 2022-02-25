@@ -1,5 +1,6 @@
 const express = require('express')
 const bodyParser = require('body-parser')
+const friendsController = require('./controllers/friends.controller')
 
 const PORT = 3000
 const app = express()
@@ -16,52 +17,15 @@ app.use((req, res, next) => {
     console.log(`${req.method} ${req.url} ${delta}ms`)
 })
 
-const friends = [
-    {
-        id: 1,
-        name: 'Mg Mg',
-    },
-    {
-        id: 2,
-        name: 'Aung Aung',
-    },
-]
-
 app.get('/', (req, res) => {
     res.send('Hello World')
 })
 
-app.get('/friends', (req, res) => {
-    res.json(friends)
-})
+app.get('/friends', friendsController.getFriends)
 
-app.post('/friends', (req, res) => {
-    if (!req.body.name) {
-        return res.status(400).json({
-            error: 'Faid to create a new friend',
-        })
-    }
+app.post('/friends', friendsController.postFriend)
 
-    const newFriend = {
-        id: friends.length + 1,
-        name: req.body.name,
-    }
-
-    friends.push(newFriend)
-    res.json(newFriend)
-})
-
-app.get('/friends/:id', (req, res) => {
-    const id = req.params.id
-    const friend = friends[id]
-    if (friend) {
-        res.json(friend)
-    } else {
-        res.status(404).json({
-            error: 'Friend not found',
-        })
-    }
-})
+app.get('/friends/:id', friendsController.getFriendById)
 
 app.listen(PORT, () => {
     console.log('Serever is running at port', PORT)
