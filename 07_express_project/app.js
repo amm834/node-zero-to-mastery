@@ -1,6 +1,6 @@
 const express = require('express')
 const bodyParser = require('body-parser')
-const friendsController = require('./controllers/friends.controller')
+const friendsRouter = require('./routes/friends.router')
 
 const PORT = 3000
 const app = express()
@@ -17,15 +17,7 @@ app.use((req, res, next) => {
     console.log(`${req.method} ${req.url} ${delta}ms`)
 })
 
-app.get('/', (req, res) => {
-    res.send('Hello World')
-})
-
-app.get('/friends', friendsController.getFriends)
-
-app.post('/friends', friendsController.postFriend)
-
-app.get('/friends/:id', friendsController.getFriendById)
+app.use(friendsRouter)
 
 app.listen(PORT, () => {
     console.log('Serever is running at port', PORT)
