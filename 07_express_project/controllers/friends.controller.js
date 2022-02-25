@@ -1,3 +1,4 @@
+const path = require('path')
 const friends = require('../models/friends.model')
 
 const getFriends = (req, res) => {
@@ -17,23 +18,29 @@ const postFriend = (req, res) => {
     }
 
     friends.push(newFriend)
-    res.json(newFriend)
+    return res.json(newFriend)
 }
 
 const getFriendById = (req, res) => {
     const id = req.params.id
     const friend = friends[id]
     if (friend) {
-        res.json(friend)
+        return res.json(friend)
     } else {
-        res.status(404).json({
+        return res.status(404).json({
             error: 'Friend not found',
         })
     }
+}
+
+const getImage = (req, res) => {
+    const filePath = path.join(__dirname, '..', 'public', 'yamato.jpg')
+    return res.sendFile(filePath)
 }
 
 module.exports = {
     getFriends,
     postFriend,
     getFriendById,
+    getImage,
 }
