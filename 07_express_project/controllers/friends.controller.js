@@ -34,7 +34,13 @@ const getFriendById = (req, res) => {
 }
 
 const getImage = (req, res) => {
-    const filePath = path.join(__dirname, '..', 'public', 'yamato.jpg')
+    const filePath = path.join(
+        __dirname,
+        '..',
+        'public',
+        'images',
+        'yamato.jpg'
+    )
     return res.sendFile(filePath)
 }
 

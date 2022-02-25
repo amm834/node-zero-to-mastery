@@ -1,10 +1,11 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const friendsRouter = require('./routes/friends.router')
+const path = require('path')
 
 const PORT = 3000
 const app = express()
-
+app.use('/site', express.static(path.join(__dirname, 'public')))
 app.use(
     bodyParser.urlencoded({
         extended: true,
