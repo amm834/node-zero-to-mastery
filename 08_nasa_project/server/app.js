@@ -18,8 +18,5 @@ app.use(
 )
 
 app.use(planetRouter)
-app.get('/', (req, res) => {
-    return res.end('hi')
-})
 
 module.exports = app

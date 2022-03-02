@@ -13,34 +13,30 @@ function isHabitable(planet) {
     )
 }
 
-const dataPath = path.join(__dirname, '../../data/kepler_data.csv')
-fs.createReadStream(dataPath)
-    .pipe(
-        parse({
-            comment: '#',
-            columns: true,
-        })
-    )
-    .on('data', (data) => {
-        if (isHabitable(data)) {
-            habitablePlantnets.push(data)
-        }
-    })
-    .on('error', (err) => {
-        console.log(err)
-    })
-    .on('close', () => {
-        console.log(
-            habitablePlantnets.map((planet) => {
-                return planet['kepler_name']
+function loadDate() {
+    return new Promise((resolve, reject) => {
+        fs.createReadStream(path.join(__dirname, '../../data/kepler_data.csv'))
+            .pipe(
+                parse({
+                    comment: '#',
+                    columns: true,
+                })
+            )
+            .on('data', (data) => {
+                if (isHabitable(data)) {
+                    habitablePlantnets.push(data)
+                }
             })
-        )
-        console.log(
-            'Total number of habitable planets',
-            habitablePlantnets.length
-        )
+            .on('error', (err) => {
+                reject(err)
+            })
+            .on('end', () => {
+                resolve()
+            })
     })
+}
 
 module.exports = {
     planets: habitablePlantnets,
+    loadDate,
 }
