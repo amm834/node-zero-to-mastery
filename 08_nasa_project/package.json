@@ -9,7 +9,8 @@
         "install": "npm run install-client && npm run install-server",
         "watch-client": "npm start --prefix ./client",
         "watch-server": "npm start --prefix ./server",
-        "start": "concurrently npm:watch-*"
+        "start": "concurrently npm:watch-*",
+        "deploy": "npm run build --prefix client && npm run serve --prefix server"
     },
     "keywords": [],
     "author": "",

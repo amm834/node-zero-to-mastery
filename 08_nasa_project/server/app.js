@@ -1,10 +1,14 @@
+const path = require('path')
 const express = require('express')
 const cors = require('cors')
 const bodyParser = require('body-parser')
+const morgan = require('morgan')
 
 const planetRouter = require('./src/routes/planets.router')
 
 const app = express()
+
+app.use(express.static(path.join(__dirname, 'public')))
 app.use(
     cors({
         origin: 'http://localhost:3000',
@@ -16,6 +20,11 @@ app.use(
         extended: true,
     })
 )
+app.use(morgan('combined'))
+
+app.get('/', (req, res) => {
+    return res.sendFile(path.join(__dirname, 'public', 'index.html'))
+})
 
 app.use(planetRouter)
 
