@@ -36,7 +36,11 @@ function loadDate() {
     })
 }
 
+function getAllPlanets() {
+    return habitablePlantnets
+}
+
 module.exports = {
-    planets: habitablePlantnets,
     loadDate,
+    getAllPlanets,
 }
