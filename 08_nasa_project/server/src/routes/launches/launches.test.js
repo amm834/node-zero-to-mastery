@@ -12,19 +12,26 @@ describe('Test GET /launches', () => {
 })
 
 describe('Test POST /launches', () => {
-    test('It should respond with 201 status', async () => {
-        const requestData = {
-            mission: 'Demo Mission',
-            rocket: 'Apolo',
-            target: 'Kepler B2',
-            launchDate: 'May 18,2030',
-        }
-        const requestDataWithoutDate = {
-            mission: 'Demo Mission',
-            rocket: 'Apolo',
-            target: 'Kepler B2',
-        }
+    const requestData = {
+        mission: 'Demo Mission',
+        rocket: 'Apolo',
+        target: 'Kepler B2',
+        launchDate: 'May 18,2030',
+    }
+    const requestDataWithoutDate = {
+        mission: 'Demo Mission',
+        rocket: 'Apolo',
+        target: 'Kepler B2',
+    }
 
+    const requestWithInvalidDate = {
+        mission: 'Demo Mission',
+        rocket: 'Apolo',
+        target: 'Kepler B2',
+        launchDate: 'boo',
+    }
+
+    test('It should respond with 201 status', async () => {
         const response = await request(app)
             .post('/launches')
             .send(requestData)
@@ -35,5 +42,29 @@ describe('Test POST /launches', () => {
         const responseLaunchDate = new Date(response.body.launchDate).valueOf()
 
         expect(responseLaunchDate).toBe(requestLaunchDate)
+        expect(response.body).toMatchObject(requestDataWithoutDate)
+    })
+
+    test('It should catch Required launch property', async () => {
+        const response = await request(app)
+            .post('/launches')
+            .send(requestDataWithoutDate)
+            .expect('Content-Type', /json/)
+            .expect(400)
+
+        expect(response.body).toStrictEqual({
+            error: 'Required launch property',
+        })
+    })
+
+    test('It should cath Invalid date', async () => {
+        const response = await request(app)
+            .post('/launches')
+            .send(requestWithInvalidDate)
+            .expect('Content-Type', /json/)
+            .expect(400)
+        expect(response.body).toStrictEqual({
+            error: 'Invalid date',
+        })
     })
 })
