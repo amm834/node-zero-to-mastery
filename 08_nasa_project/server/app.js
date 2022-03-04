@@ -23,11 +23,11 @@ app.use(
 )
 app.use(morgan('combined'))
 
-app.get('/', (req, res) => {
-    return res.sendFile(path.join(__dirname, 'public', 'index.html'))
-})
-
 app.use(planetRouter)
 app.use(launchesRouter)
+
+app.get('/*', (req, res) => {
+    return res.sendFile(path.join(__dirname, 'public', 'index.html'))
+})
 
 module.exports = app
