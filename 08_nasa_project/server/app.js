@@ -5,6 +5,7 @@ const bodyParser = require('body-parser')
 const morgan = require('morgan')
 
 const planetRouter = require('./src/routes/planets/planets.router')
+const launchesRouter = require('./src/routes/launches/launches.router')
 
 const app = express()
 
@@ -27,5 +28,6 @@ app.get('/', (req, res) => {
 })
 
 app.use(planetRouter)
+app.use(launchesRouter)
 
 module.exports = app
