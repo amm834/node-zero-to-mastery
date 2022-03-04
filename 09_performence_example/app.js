@@ -1,6 +1,4 @@
 const express = require('express')
-const cluster = require('cluster')
-const os = require('os')
 
 const app = express()
 
@@ -20,13 +18,5 @@ app.get('/timer', (req, res) => {
     return res.send('Wating ...')
 })
 
-if (cluster.isMaster) {
-    console.log('Master process is running at %d', process.pid)
-    const NUMS_WORKER = os.cpus().length
-    for (let i = 0; i < NUMS_WORKER; i++) {
-        cluster.fork()
-    }
-} else {
-    console.log('Worker process is running %d', process.pid)
-    app.listen(3000)
-}
+console.log('Worker process is running %d', process.pid)
+app.listen(3000)
