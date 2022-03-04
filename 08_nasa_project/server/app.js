@@ -21,10 +21,10 @@ app.use(
         extended: true,
     })
 )
-app.use(morgan('combined'))
+// app.use(morgan('combined'))
 
-app.use(planetRouter)
-app.use(launchesRouter)
+app.use('/planets', planetRouter)
+app.use('/launches', launchesRouter)
 
 app.get('/*', (req, res) => {
     return res.sendFile(path.join(__dirname, 'public', 'index.html'))

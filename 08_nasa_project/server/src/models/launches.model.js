@@ -30,6 +30,7 @@ function addNewLaunch(launch) {
             customer: ['Myanmar', 'NASA'],
         })
     )
+    return launch
 }
 
 module.exports = {
