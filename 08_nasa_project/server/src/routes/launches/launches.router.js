@@ -9,6 +9,6 @@ const launchesRouter = express.Router()
 
 launchesRouter.get('/', httpGetAllLaunches)
 launchesRouter.post('/', httpAddNewLaunch)
-launchesRouter.get('/:id', httpAbortLaunch)
+launchesRouter.delete('/:id', httpAbortLaunch)
 
 module.exports = launchesRouter
