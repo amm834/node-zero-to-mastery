@@ -21,7 +21,7 @@ app.use(
         extended: true,
     })
 )
-// app.use(morgan('combined'))
+app.use(morgan('combined'))
 
 app.use('/planets', planetRouter)
 app.use('/launches', launchesRouter)
