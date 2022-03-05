@@ -25,16 +25,15 @@ function loadDate() {
             )
             .on('data', async (data) => {
                 if (isHabitable(data)) {
-                    // TODO: to upsert the data
-                    // await planets.create({
-                    //     keplerName: data.kepler_name,
-                    // })
+                    savePlanet(data)
                 }
             })
             .on('error', (err) => {
                 reject(err)
             })
-            .on('end', () => {
+            .on('end', async () => {
+                const count = (await getAllPlanets()).length
+                console.log(`Total planets ${count}`)
                 resolve()
             })
     })
@@ -42,6 +41,24 @@ function loadDate() {
 
 async function getAllPlanets() {
     return await planets.find({})
+}
+
+async function savePlanet(planet) {
+    try {
+        await planets.updateOne(
+            {
+                keplerName: planet.kepler_name,
+            },
+            {
+                keplerName: planet.kepler_name,
+            },
+            {
+                upsert: true,
+            }
+        )
+    } catch (err) {
+        console.log(`Cannot save planets ${err}`)
+    }
 }
 
 module.exports = {
