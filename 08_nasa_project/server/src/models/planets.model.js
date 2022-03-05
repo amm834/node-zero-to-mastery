@@ -1,6 +1,7 @@
 const path = require('path')
 const { parse } = require('csv-parse')
 const fs = require('fs')
+const planets = require('./planets.schema')
 
 const habitablePlantnets = []
 
@@ -22,9 +23,11 @@ function loadDate() {
                     columns: true,
                 })
             )
-            .on('data', (data) => {
+            .on('data', async (data) => {
                 if (isHabitable(data)) {
-                    habitablePlantnets.push(data)
+                    await planets.create({
+                        keplerName: data.kepler_name,
+                    })
                 }
             })
             .on('error', (err) => {
