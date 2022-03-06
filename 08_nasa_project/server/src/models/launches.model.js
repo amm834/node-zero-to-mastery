@@ -1,7 +1,7 @@
 const launches = require('../models/launches.schema')
 const planets = require('../models/planets.schema')
 
-let latestLaunchNumber = 100
+const DEFAULT_LAUNCH_NUMBER = 100
 
 const launch = {
     flightNumber: 100,
@@ -68,6 +68,13 @@ function abortLaunchWithId(launchId) {
     aborted.upcoming = false
 
     return aborted
+}
+
+async function getLatestLaunches() {
+    const latestLaunches = await launches.findOne().sort('-flightNumber')
+    if (!latestLaunches) {
+        return DEFAULT_LAUNCH_NUMBER
+    }
 }
 
 module.exports = {
