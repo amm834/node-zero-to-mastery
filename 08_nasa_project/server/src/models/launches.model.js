@@ -1,4 +1,4 @@
-const launches = new Map()
+const launches = require('../models/launches.schema')
 
 let latestLaunchNumber = 100
 
@@ -13,7 +13,19 @@ const launch = {
     success: true,
 }
 
-launches.set(launch.flightNumber, launch)
+async function saveLaunch(launch) {
+    await launches.updateOne(
+        {
+            flightNumber: launch.flightNumber,
+        },
+        launch,
+        {
+            upsert: true,
+        }
+    )
+}
+
+saveLaunch(launch)
 
 function existsLaunchWithId(launchId) {
     return launches.has(launchId)
