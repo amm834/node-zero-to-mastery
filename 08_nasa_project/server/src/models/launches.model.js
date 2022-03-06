@@ -31,8 +31,8 @@ function existsLaunchWithId(launchId) {
     return launches.has(launchId)
 }
 
-function getAllLaunches() {
-    return Array.from(launches.values())
+async function getAllLaunches() {
+    return await launches.find({})
 }
 
 function addNewLaunch(launch) {
