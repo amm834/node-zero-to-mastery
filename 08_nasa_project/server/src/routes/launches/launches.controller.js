@@ -43,7 +43,15 @@ function httpAbortLaunch(req, res) {
         })
     }
     const aborted = abortLaunchWithId(launchId)
-    return res.status(200).json(aborted)
+    if (!aborted) {
+        return res.status(400).json({
+            error: 'Fail to abort missioin',
+        })
+    } else {
+        return res.status(200).json({
+            ok: true,
+        })
+    }
 }
 
 module.exports = {

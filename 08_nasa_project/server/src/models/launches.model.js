@@ -21,7 +21,7 @@ async function saveLaunch(launch) {
     if (!planet) {
         throw new Error('No planet with that name')
     }
-    await launches.updateOne(
+    await launches.findOneAndUpdate(
         {
             flightNumber: launch.flightNumber,
         },
@@ -74,12 +74,18 @@ async function scheduleNewLaunch(launch) {
 //     return launch
 // }
 
-function abortLaunchWithId(launchId) {
-    const aborted = launches.get(launchId)
-    aborted.success = false
-    aborted.upcoming = false
+async function abortLaunchWithId(launchId) {
+    const aborted = await launches.updateOne(
+        {
+            flightNumber: launchId,
+        },
+        {
+            upcoming: false,
+            success: false,
+        }
+    )
 
-    return aborted
+    return aborted.nModified === 1 && aborted.ok === 1
 }
 
 async function getLatestLaunches() {
