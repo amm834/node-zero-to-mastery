@@ -1,4 +1,5 @@
 const launches = require('../models/launches.schema')
+const planets = require('../models/planets.schema')
 
 let latestLaunchNumber = 100
 
@@ -7,13 +8,19 @@ const launch = {
     mission: 'Kepler Exploration X',
     rocket: 'Exploser IS1',
     launcheDate: new Date('December 30,2030'),
-    target: 'Kepler 442 B',
+    target: 'Kepler-1649 b',
     customer: ['Myanmar', 'NASA'],
     upcoming: true,
     success: true,
 }
 
 async function saveLaunch(launch) {
+    const planet = await planets.findOne({
+        keplerName: launch.target,
+    })
+    if (!planet) {
+        throw new Error('No planet with that name')
+    }
     await launches.updateOne(
         {
             flightNumber: launch.flightNumber,
@@ -32,7 +39,13 @@ function existsLaunchWithId(launchId) {
 }
 
 async function getAllLaunches() {
-    return await launches.find({})
+    return await launches.find(
+        {},
+        {
+            _id: 0,
+            __v: 0,
+        }
+    )
 }
 
 function addNewLaunch(launch) {
