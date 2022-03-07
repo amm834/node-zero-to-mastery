@@ -10,6 +10,16 @@ mongoose.connection.once('open', () => {
 mongoose.connection.on('error', (error) => {
     console.log(error)
 })
-module.exports = async () => {
+
+async function openConnection() {
     await mongoose.connect(MONGO_URL)
+}
+
+async function closeConnection() {
+    await mongoose.disconnect()
+}
+
+module.exports = {
+    openConnection,
+    closeConnection,
 }

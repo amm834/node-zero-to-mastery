@@ -15,25 +15,21 @@ const launch = {
 }
 
 async function saveLaunch(launch) {
-    try {
-        const planet = await planets.findOne({
-            keplerName: launch.target,
-        })
-        if (!planet) {
-            throw new Error('No planet with that name')
-        }
-        await launches.findOneAndUpdate(
-            {
-                flightNumber: launch.flightNumber,
-            },
-            launch,
-            {
-                upsert: true,
-            }
-        )
-    } catch (error) {
-        throw new Error(error)
+    const planet = await planets.findOne({
+        keplerName: launch.target,
+    })
+    if (!planet) {
+        throw new Error('No planet with that name')
     }
+    await launches.findOneAndUpdate(
+        {
+            flightNumber: launch.flightNumber,
+        },
+        launch,
+        {
+            upsert: true,
+        }
+    )
 }
 
 saveLaunch(launch)

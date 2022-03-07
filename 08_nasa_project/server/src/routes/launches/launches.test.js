@@ -1,10 +1,13 @@
 const request = require('supertest')
 const app = require('../../../app')
-const mongoService = require('../../services/mogo')
+const { openConnection, closeConnection } = require('../../services/mogo')
 
 describe('Testing launches', () => {
     beforeAll(async () => {
-        await mongoService()
+        await openConnection()
+    })
+    afterAll(async () => {
+        await closeConnection()
     })
 
     describe('Test GET /launches', () => {
@@ -21,19 +24,19 @@ describe('Testing launches', () => {
         const requestData = {
             mission: 'Demo Mission',
             rocket: 'Apolo',
-            target: 'Kepler B2',
+            target: 'Kepler-296 f',
             launchDate: 'May 18,2030',
         }
         const requestDataWithoutDate = {
             mission: 'Demo Mission',
             rocket: 'Apolo',
-            target: 'Kepler B2',
+            target: 'Kepler-296 f',
         }
 
         const requestWithInvalidDate = {
             mission: 'Demo Mission',
             rocket: 'Apolo',
-            target: 'Kepler B2',
+            target: 'Kepler-296 f',
             launchDate: 'boo',
         }
 
