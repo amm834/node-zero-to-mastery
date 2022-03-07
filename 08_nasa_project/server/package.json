@@ -11,6 +11,9 @@
     "keywords": [],
     "author": "",
     "license": "ISC",
+    "jest": {
+        "testEnvironment": "node"
+    },
     "dependencies": {
         "body-parser": "^1.19.2",
         "cors": "^2.8.5",
