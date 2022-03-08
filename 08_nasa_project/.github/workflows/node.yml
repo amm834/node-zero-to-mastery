@@ -6,12 +6,24 @@ on:
         branches: ['master']
 jobs:
     build:
+        env:
+            CI: true
+            MONGO_URL: mongodb://localhost/nasa
+        strategy:
+            matrix:
+                node-version: [14.x, 16.x]
+                mongodb-version: ['4.4']
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v2
-            - name: Use node version 16
+            - name: Use node version 16 ${{ matrix.node-version }}
               uses: actions/setup-node@v2
               with:
-                  node-version: '16'
+                  node-version: ${{ matrix.node-veresion }}
+            - name: Use Mongo DB from Github Actions
+              uses: supercharge/mongodb-github-action@1.6.0
+              with:
+                  mongodb-version: ${{ matrix.mongodb-version }}
             - run: npm install
             - run: npm run build --prfix client
+            - run: npm test
